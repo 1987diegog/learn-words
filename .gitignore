@@ -1,0 +1,10 @@
+*.project
+*.classpath
+target/
+.settings/
+.metadata/
+.attach_pid*
+.mvn/
+*mvn*
+.idea/
+*.iml
