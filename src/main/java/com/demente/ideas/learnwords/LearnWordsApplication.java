@@ -8,12 +8,14 @@ import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import javax.annotation.PostConstruct;
 import java.util.TimeZone;
 
+//same as @Configuration @EnableAutoConfiguration @ComponentScan
 @SpringBootApplication
 @EntityScan(basePackageClasses = {
 		LearnWordsApplication.class,
 		Jsr310JpaConverters.class
 })
 public class LearnWordsApplication {
+
 	@PostConstruct
 	void init() {
 		TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
