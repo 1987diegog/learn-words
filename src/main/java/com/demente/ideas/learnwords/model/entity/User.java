@@ -1,4 +1,4 @@
-package com.demente.ideas.learnwords.model;
+package com.demente.ideas.learnwords.model.entity;
 
 import org.hibernate.annotations.NaturalId;
 
@@ -41,6 +41,15 @@ public class User extends DateAudit {
     @Size(max = 100)
     private String password;
 
+    @Column(nullable = false)
+    private boolean enabled;
+
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "STATUS", length = 30)
+    private Status status;
+
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -56,6 +65,9 @@ public class User extends DateAudit {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.enabled = true;
+        this.status = Status.ENABLED;
+        this.roles = new HashSet<>();
     }
 
     public Long getId() {
@@ -72,6 +84,18 @@ public class User extends DateAudit {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public String getName() {
@@ -104,5 +128,13 @@ public class User extends DateAudit {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

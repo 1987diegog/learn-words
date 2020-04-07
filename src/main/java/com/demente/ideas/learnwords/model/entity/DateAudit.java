@@ -1,4 +1,4 @@
-package com.demente.ideas.learnwords.model;
+package com.demente.ideas.learnwords.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.CreatedDate;
