@@ -29,8 +29,10 @@ public class JpaUserDetailsService implements UserDetailsService {
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
+        logger.info("[AUTHENTICATION] - Se consulta si el usuario exite en BD findByUsername: " + username);
+
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not exist: " + username));
+                .orElseThrow(() -> new UsernameNotFoundException("[AUTHENTICATION] - User not exist: " + username));
 
         List<GrantedAuthority> authorities = new ArrayList<>();
         for (Role role : user.getRoles()) {
@@ -39,8 +41,8 @@ public class JpaUserDetailsService implements UserDetailsService {
         }
 
         if (authorities.isEmpty()) {
-            logger.error("Error login: User " + username + ", dont have any roles");
-            throw new UsernameNotFoundException("User " + username + ", dont have any roles");
+            logger.error("[AUTHENTICATION] - Error login: User " + username + ", dont have any roles");
+            throw new UsernameNotFoundException("[AUTHENTICATION] - User " + username + ", dont have any roles");
         }
 
         // Return a userdetails type from Spring

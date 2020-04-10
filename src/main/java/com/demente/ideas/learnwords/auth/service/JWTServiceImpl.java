@@ -1,11 +1,14 @@
 package com.demente.ideas.learnwords.auth.service;
 
 import com.demente.ideas.learnwords.auth.SimpleGrantedAuthorityMixIn;
+import com.demente.ideas.learnwords.model.services.JpaUserDetailsService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,7 +24,9 @@ import java.util.Date;
 @Component
 public class JWTServiceImpl implements JWTService {
 
-	// Secret key generada con http://keygen.io/
+    private Logger logger = LoggerFactory.getLogger(JWTServiceImpl.class);
+
+    // Secret key generada con http://keygen.io/
     public static final String SECRET = Base64Utils
 			.encodeToString("878b75b1a38838163ee71f80725fb42fd091887e0bb5b370a313e2de91a99f4736403d7fbca8f3ee796578a3b2692cf1f6d2e6d0537d8e238ef2340ab2e5ef7b"
 					.getBytes());
@@ -38,6 +43,7 @@ public class JWTServiceImpl implements JWTService {
 //
 //        // data user
         String username = ((User) (auth.getPrincipal())).getUsername();
+        logger.info("[AUTHENTICATION] - Se procede a crear el JWT para el usuario: " + username);
         Collection<? extends GrantedAuthority> roles = auth.getAuthorities();
 
         Claims claims = Jwts.claims();
@@ -56,6 +62,8 @@ public class JWTServiceImpl implements JWTService {
         String token = Jwts.builder().setClaims(claims).setSubject(username)
                 .signWith(SignatureAlgorithm.HS512, SECRET.getBytes()).setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_DATE)).compact();
+
+        logger.info("[AUTHENTICATION] - JWT creado con exito para el usuario: " + username);
 
         return token;
     }
