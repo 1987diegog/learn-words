@@ -1,7 +1,7 @@
 package com.demente.ideas.learnwords.components;
 
 import com.demente.ideas.learnwords.model.entity.Role;
-import com.demente.ideas.learnwords.model.entity.RoleName;
+import com.demente.ideas.learnwords.model.domain.RoleName;
 import com.demente.ideas.learnwords.model.entity.User;
 import com.demente.ideas.learnwords.repository.IRoleRepository;
 import com.demente.ideas.learnwords.repository.IUserRepository;
@@ -27,6 +27,16 @@ public class DataLoader implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
+        chargeUserAndRoles();
+
+        System.out.println("[INIT_DATA] - LOADING DATA....");
+        Role roleAdmin = roleRepository.save(new Role(RoleName.ROLE_ADMIN));
+        Role roleUser = roleRepository.save(new Role(RoleName.ROLE_USER));
+        System.out.println("[INIT_DATA] - INSERTS ROLES OK");
+
+    }
+
+    private void chargeUserAndRoles() {
 
         System.out.println("[INIT_DATA] - LOADING DATA....");
         Role roleAdmin = roleRepository.save(new Role(RoleName.ROLE_ADMIN));

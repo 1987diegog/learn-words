@@ -1,5 +1,7 @@
 package com.demente.ideas.learnwords.model.entity;
 
+import com.demente.ideas.learnwords.model.domain.DateAudit;
+import com.demente.ideas.learnwords.model.domain.Status;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
@@ -10,7 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "users", uniqueConstraints = {
+@Table(name = "IDDE_T_USERS", uniqueConstraints = {
         @UniqueConstraint(columnNames = {
                 "username"
         }),
@@ -19,6 +21,7 @@ import java.util.Set;
         })
 })
 public class User extends DateAudit {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,14 +44,9 @@ public class User extends DateAudit {
     @Size(max = 100)
     private String password;
 
-    @Column(nullable = false)
-    private boolean enabled;
-
-
     @Enumerated(value = EnumType.STRING)
     @Column(name = "STATUS", length = 30)
     private Status status;
-
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
@@ -65,7 +63,6 @@ public class User extends DateAudit {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.enabled = true;
         this.status = Status.ENABLED;
         this.roles = new HashSet<>();
     }
@@ -86,9 +83,6 @@ public class User extends DateAudit {
         this.username = username;
     }
 
-    public boolean isEnabled() {
-        return enabled;
-    }
 
     public Status getStatus() {
         return status;
@@ -96,6 +90,14 @@ public class User extends DateAudit {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public boolean isEnabled() {
+        if (this.status.equals(Status.ENABLED)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public String getName() {
@@ -130,11 +132,4 @@ public class User extends DateAudit {
         this.roles = roles;
     }
 
-    public boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
 }

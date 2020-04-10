@@ -45,6 +45,6 @@ public class JpaUserDetailsService implements UserDetailsService {
 
         // Return a userdetails type from Spring
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-                user.getEnabled(), true, true, true, authorities);
+                user.isEnabled(), true, true, true, authorities);
     }
 }
