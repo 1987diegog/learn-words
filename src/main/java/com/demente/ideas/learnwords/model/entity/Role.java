@@ -1,10 +1,12 @@
 package com.demente.ideas.learnwords.model.entity;
 
+import com.demente.ideas.learnwords.model.domain.RoleName;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "IDDE_T_ROLES")
 public class Role {
 
     @Id

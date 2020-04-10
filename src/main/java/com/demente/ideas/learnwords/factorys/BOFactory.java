@@ -1,7 +1,7 @@
 package com.demente.ideas.learnwords.factorys;
 
 import com.demente.ideas.learnwords.dtos.UserDTO;
-import com.demente.ideas.learnwords.model.entity.Status;
+import com.demente.ideas.learnwords.model.domain.Status;
 import com.demente.ideas.learnwords.model.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

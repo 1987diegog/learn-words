@@ -1,7 +1,7 @@
 package com.demente.ideas.learnwords.repository;
 
 import com.demente.ideas.learnwords.model.entity.Role;
-import com.demente.ideas.learnwords.model.entity.RoleName;
+import com.demente.ideas.learnwords.model.domain.RoleName;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

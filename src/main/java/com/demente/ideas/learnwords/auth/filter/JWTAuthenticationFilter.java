@@ -45,12 +45,13 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
      */
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response) throws AuthenticationException {
+
         String username = this.obtainUsername(request);
         String password = this.obtainPassword(request);
 
         if (username != null && password != null) {
-            logger.info("Username desde request parameter (form-data): " + username);
-            logger.info("Password desde request parameter (form-data): " + password);
+            logger.info("[AUTHENTICATION] - Username desde request parameter (form-data): " + username);
+            logger.info("[AUTHENTICATION] - Password desde request parameter (form-data): " + password);
         } else {
             com.demente.ideas.learnwords.model.entity.User client = null;
             try {
@@ -59,8 +60,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 username = client.getUsername();
                 password = client.getPassword();
 
-                logger.info("Username desde request InputStream (raw): " + username);
-                logger.info("Password desde request InputStream (raw): " + password);
+                logger.info("[AUTHENTICATION] - Username desde request InputStream (raw-JSON): " + username);
+                logger.info("[AUTHENTICATION] - Password desde request InputStream (raw-JSON): " + password);
 
             } catch (JsonParseException e) {
                 e.printStackTrace();
@@ -75,10 +76,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         password.trim();
 
         if (username != null && password != null) {
-            logger.info("Username desde request parameter (form-data): " + username);
-            logger.info("Password desde request parameter (form-data): " + password);
+            logger.info("[AUTHENTICATION] - Username desde request parameter (form-data): " + username);
+            logger.info("[AUTHENTICATION] - Password desde request parameter (form-data): " + password);
         }
 
+        logger.info("[AUTHENTICATION] - Se procede a realizar la autentificacion...");
         UsernamePasswordAuthenticationToken authToken =
                 new UsernamePasswordAuthenticationToken(username, password);
 
@@ -91,6 +93,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
 
+        logger.info("[AUTHENTICATION] - Usuario autentificado correctamente...");
         String token = jwtService.create(authResult);
 
         response.addHeader(JWTServiceImpl.HEADER_STRING, JWTServiceImpl.TOKEN_PREFIX + token);

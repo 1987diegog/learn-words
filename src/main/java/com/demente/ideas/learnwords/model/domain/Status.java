@@ -1,4 +1,4 @@
-package com.demente.ideas.learnwords.model.entity;
+package com.demente.ideas.learnwords.model.domain;
 
 /**
  * @author 1987diegog
