@@ -19,31 +19,6 @@ public class BOFactory {
     /////////////////////////////////////////////////////////////
 
     /**
-     * @param userDTO
-     * @return
-     */
-    public static User create(UserDTO userDTO) {
-
-        logger.info("[CREATE_USER_BO] Start create user BOFactory...");
-
-        User user = null;
-
-        if (userDTO != null) {
-            user = new User();
-            BeanUtils.copyProperties(userDTO, user);
-
-            //////////////////////////////////////////////////
-            // Additional attributes or data types to adapt //
-            //////////////////////////////////////////////////
-            user.setStatus(Status.get(userDTO.getStatus()));
-        }
-
-        logger.info("[CREATE_USER_BO] Create user BOFactory Successful");
-
-        return user;
-    }
-
-    /**
      * @param user
      * @param userDTO
      * @return

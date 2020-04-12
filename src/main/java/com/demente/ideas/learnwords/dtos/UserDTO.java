@@ -11,6 +11,7 @@ public class UserDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long idUser;
+
     @NotBlank(message = "Name is mandatory")
     private String name;
     @NotBlank(message = "LastName is mandatory")
@@ -21,6 +22,31 @@ public class UserDTO implements Serializable {
     private String status;
     @NotBlank(message = "Email is mandatory")
     private String email;
+
+    public UserDTO() {
+    }
+
+    public UserDTO(Long idUser, @NotBlank(message = "Name is mandatory") String name,
+                   @NotBlank(message = "LastName is mandatory") String lastName,
+                   @NotBlank(message = "Username is mandatory") String username,
+                   @NotBlank(message = "Email is mandatory") String email,
+                   @NotBlank(message = "Status is mandatory") String status) {
+
+        this.idUser = idUser;
+        this.name = name;
+        this.lastName = lastName;
+        this.username = username;
+        this.email = email;
+        this.status = status;
+    }
+
+    public Long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
+    }
 
     public String getName() {
         return name;
@@ -38,22 +64,6 @@ public class UserDTO implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Long getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(Long idUser) {
-        this.idUser = idUser;
-    }
-
     public String getUsername() {
         return username;
     }
@@ -68,5 +78,13 @@ public class UserDTO implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

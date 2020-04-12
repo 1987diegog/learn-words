@@ -1,7 +1,5 @@
 package com.demente.ideas.learnwords.dtos;
 
-import com.demente.ideas.learnwords.model.domain.DateAudit;
-
 import java.io.Serializable;
 
 public class WordDTO implements Serializable {

@@ -1,12 +1,13 @@
 package com.demente.ideas.learnwords.view;
 
-import com.demente.ideas.learnwords.dtos.ListUsersDTO;
+import com.demente.ideas.learnwords.dtos.UsersListDTO;
 import com.demente.ideas.learnwords.dtos.UserDTO;
 import com.demente.ideas.learnwords.exceptions.InternalServerErrorException;
 import com.demente.ideas.learnwords.exceptions.NotFoundException;
 import com.demente.ideas.learnwords.exceptions.UserNotFoundException;
 import com.demente.ideas.learnwords.factorys.BOFactory;
 import com.demente.ideas.learnwords.factorys.DTOFactory;
+import com.demente.ideas.learnwords.mapper.UserMapper;
 import com.demente.ideas.learnwords.model.entity.User;
 import com.demente.ideas.learnwords.model.services.UserService;
 import io.swagger.annotations.Api;
@@ -15,6 +16,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,10 +33,13 @@ public class UserResource {
 
     private Logger logger = LoggerFactory.getLogger(UserResource.class);
 
-    private final UserService userService;
+    @Autowired
+    private UserService userService;
 
-    public UserResource(UserService userService) {
-        this.userService = userService;
+    @Autowired
+    private UserMapper userMapper;
+
+    public UserResource() {
     }
 
     @PostMapping(//
@@ -49,8 +54,8 @@ public class UserResource {
             throws InternalServerErrorException {
         try {
             logger.info("[CREATE_USER] - It will try to create the user with email: " + userDTO.getEmail());
-            User user = userService.save(BOFactory.create(userDTO));
-            UserDTO DTOUserResponse = DTOFactory.create(user);
+            User user = userService.save(userMapper.create(userDTO));
+            UserDTO DTOUserResponse = userMapper.create(user);
             logger.info("[CREATE_USER] - User created successful, the associated id was: " + user.getId()
                     + ", email: " + userDTO.getEmail());
             return new ResponseEntity<>(DTOUserResponse, HttpStatus.CREATED);
@@ -76,7 +81,7 @@ public class UserResource {
             User user = userService.findById(userDTO.getIdUser());
             user = BOFactory.modify(user, userDTO);
             User userModified = userService.update(user);
-            UserDTO DTOUserResponse = DTOFactory.create(userModified);
+            UserDTO DTOUserResponse = userMapper.create(userModified);
             logger.info("[UPDATE_USER] - User updated successful, id: " + userDTO.getIdUser());
             return new ResponseEntity<>(DTOUserResponse, HttpStatus.OK);
         } catch (UserNotFoundException e) {
@@ -125,14 +130,14 @@ public class UserResource {
     @ApiResponses(value = { //
             @ApiResponse(code = 200, message = "Users found"), //
             @ApiResponse(code = 500, message = "Internal system error")})
-    public ResponseEntity<ListUsersDTO> findAll()
+    public ResponseEntity<UsersListDTO> findAll()
             throws InternalServerErrorException {
         try {
             logger.info("[GET_ALL_USERS] - It will try to return all system users...");
             List<User> userList = this.userService.findAll();
-            ListUsersDTO listUsersDTO = DTOFactory.createList(userList);
+            UsersListDTO usersListDTO = DTOFactory.createList(userList);
             logger.info("[GET_ALL_USERS] - Get all users finished successfully ");
-            return new ResponseEntity<>(listUsersDTO, HttpStatus.OK);
+            return new ResponseEntity<>(usersListDTO, HttpStatus.OK);
         } catch (Exception e) {
             logger.error("[GET_ALL_USERS] [ERROR] - Internal system error, when trying to get all users", e);
             throw new InternalServerErrorException("Internal server error, when trying to get all users");

@@ -5,7 +5,6 @@ import com.demente.ideas.learnwords.model.domain.DateAudit;
 import javax.persistence.*;
 import java.util.Set;
 
-
 @Entity
 @Table(name = "IDDE_T_WORDS")
 public class Word extends DateAudit {
@@ -24,6 +23,13 @@ public class Word extends DateAudit {
     @OneToMany(mappedBy = "word", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Meaning> meanings;
+
+    public Word() {
+    }
+
+    public Word(String word) {
+        this.word = word;
+    }
 
     public Long getId() {
         return id;

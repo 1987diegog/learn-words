@@ -15,6 +15,13 @@ public class Meaning {
     @JoinColumn(name = "ID_WORD", foreignKey = @ForeignKey(name = "FK_WORD"))
     private Word word;
 
+    public Meaning() {
+    }
+
+    public Meaning(String meaning) {
+        this.description = meaning;
+    }
+
     public Long getId() {
         return id;
     }
@@ -29,5 +36,13 @@ public class Meaning {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Word getWord() {
+        return word;
+    }
+
+    public void setWord(Word word) {
+        this.word = word;
     }
 }

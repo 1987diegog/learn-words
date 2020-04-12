@@ -1,11 +1,12 @@
 package com.demente.ideas.learnwords.factorys;
 
-import com.demente.ideas.learnwords.dtos.ListUsersDTO;
+import com.demente.ideas.learnwords.dtos.UsersListDTO;
 import com.demente.ideas.learnwords.dtos.UserDTO;
+import com.demente.ideas.learnwords.mapper.UserMapper;
 import com.demente.ideas.learnwords.model.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.BeanUtils;
+import org.mapstruct.factory.Mappers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,9 @@ public class DTOFactory {
 
     static Logger logger = LogManager.getLogger(DTOFactory.class);
 
+    private static UserMapper userMapper
+            = Mappers.getMapper(UserMapper.class);
+
     /////////////////////////////////////////////////////////////
     /////////////////////////// USER ////////////////////////////
     /////////////////////////////////////////////////////////////
@@ -26,38 +30,17 @@ public class DTOFactory {
      * @param listUsers
      * @return
      */
-    public static ListUsersDTO createList(List<User> listUsers) {
+    public static UsersListDTO createList(List<User> listUsers) {
 
         List<UserDTO> listUsersDTO = null;
         if (listUsers != null) {
 
-            listUsersDTO = listUsers.stream().map(DTOFactory::create) //
+            listUsersDTO = listUsers.stream().map(userMapper::create) //
                     .collect(Collectors.toCollection(ArrayList::new));
         }
 
         logger.info("[GET_LIST_USERS_DTO] DTOFactory Successful");
 
-        return new ListUsersDTO(listUsersDTO);
-    }
-
-
-    /**
-     * @param user
-     * @return
-     */
-    public static UserDTO create(User user) {
-
-        UserDTO userDTO = null;
-        if (user != null) {
-            userDTO = new UserDTO();
-            BeanUtils.copyProperties(user, userDTO);
-
-            //////////////////////////////////////////////////
-            // Additional attributes or data types to adapt //
-            //////////////////////////////////////////////////
-            userDTO.setStatus(user.getStatus().name());
-        }
-
-        return userDTO;
+        return new UsersListDTO(listUsersDTO);
     }
 }

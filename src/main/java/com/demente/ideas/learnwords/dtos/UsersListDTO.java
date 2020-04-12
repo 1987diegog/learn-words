@@ -7,18 +7,18 @@ import java.util.List;
 /**
  * @author 1987diegog
  */
-public class ListUsersDTO implements Serializable {
+public class UsersListDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private List<UserDTO> users;
 
-    public ListUsersDTO() {
+    public UsersListDTO() {
     }
 
-    public ListUsersDTO(List<UserDTO> listUsersDTO) {
+    public UsersListDTO(List<UserDTO> usersListDTO) {
         this.users = new ArrayList<>();
-        this.users.addAll(listUsersDTO);
+        this.users.addAll(usersListDTO);
     }
 
     public List<UserDTO> getUsers() {
