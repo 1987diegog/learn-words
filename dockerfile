@@ -11,8 +11,8 @@ LABEL maintainer=1987diegog@gmail.com
 # creates working directories for Tomcat in this path
 VOLUME /tmp
 
-# Make port 8080 available to the world outside this container
-EXPOSE 8080
+# Make port 8099 available to the world outside this container
+EXPOSE 8099
 
 # The application's jar file
 # The ARG instruction defines a variable with a default value.
@@ -27,4 +27,4 @@ ADD ${JAR_FILE} learn-words.jar
 # Configure how the application is executed inside the container. Run the jar file
 # -Djava.security.egd=file:/dev/./urandom: Activates a much faster implementation for the SecureRandom
 # provider. In some applications this can cut down the applications startup time in half.
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/wallets-core.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/learn-words.jar"]
