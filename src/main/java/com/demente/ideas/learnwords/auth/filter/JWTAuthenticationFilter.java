@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * @author 1987diegog
+ * <p>
  * Filtro configurado en security config por eje [addFilter(new JWTAuthenticationFilter(authenticationManager()))]
  * Previo se debe configurar el userDetailsService que utilizara el authentication manager,
  * por ejemplo [AuthenticationManagerBuilder.userDetailsService(jpaUserDetailsService)]
@@ -53,10 +55,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             logger.info("[AUTHENTICATION] - Username desde request parameter (form-data): " + username);
             logger.info("[AUTHENTICATION] - Password desde request parameter (form-data): " + password);
         } else {
-            com.demente.ideas.learnwords.model.entity.User client = null;
+            com.demente.ideas.learnwords.model.domain.entity.User client = null;
             try {
                 client = new ObjectMapper().readValue(request.getInputStream(),
-                        com.demente.ideas.learnwords.model.entity.User.class);
+                        com.demente.ideas.learnwords.model.domain.entity.User.class);
                 username = client.getUsername();
                 password = client.getPassword();
 

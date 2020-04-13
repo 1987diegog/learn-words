@@ -21,6 +21,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
+/**
+ * @author 1987diegog
+ */
 @Component
 public class JWTServiceImpl implements JWTService {
 

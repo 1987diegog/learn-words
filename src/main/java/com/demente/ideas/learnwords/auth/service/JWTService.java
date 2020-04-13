@@ -7,6 +7,9 @@ import org.springframework.security.core.GrantedAuthority;
 import java.io.IOException;
 import java.util.Collection;
 
+/**
+ * @author 1987diegog
+ */
 public interface JWTService {
 
 	String create(Authentication auth) throws IOException;

@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author 1987diegog
+ */
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
     private JWTService jwtService;

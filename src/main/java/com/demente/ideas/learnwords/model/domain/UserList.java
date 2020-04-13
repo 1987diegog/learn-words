@@ -1,6 +1,6 @@
 package com.demente.ideas.learnwords.model.domain;
 
-import com.demente.ideas.learnwords.model.entity.User;
+import com.demente.ideas.learnwords.model.domain.entity.User;
 
 import java.io.Serializable;
 import java.util.ArrayList;

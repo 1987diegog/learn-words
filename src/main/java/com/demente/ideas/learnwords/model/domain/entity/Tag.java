@@ -1,9 +1,12 @@
-package com.demente.ideas.learnwords.model.entity;
+package com.demente.ideas.learnwords.model.domain.entity;
 
 import javax.persistence.*;
 
+/**
+ * @author 1987diegog
+ */
 @Entity
-@Table(name = "IDDE_T_TAGS")
+@Table(name = "DEMENTE_T_TAGS")
 public class Tag {
 
     @Id

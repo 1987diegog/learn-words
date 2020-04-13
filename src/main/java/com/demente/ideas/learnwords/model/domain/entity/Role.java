@@ -1,12 +1,15 @@
-package com.demente.ideas.learnwords.model.entity;
+package com.demente.ideas.learnwords.model.domain.entity;
 
 import com.demente.ideas.learnwords.model.domain.RoleName;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+/**
+ * @author 1987diegog
+ */
 @Entity
-@Table(name = "IDDE_T_ROLES")
+@Table(name = "DEMENTE_T_ROLES")
 public class Role {
 
     @Id

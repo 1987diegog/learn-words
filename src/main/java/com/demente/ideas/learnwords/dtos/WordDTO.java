@@ -2,6 +2,9 @@ package com.demente.ideas.learnwords.dtos;
 
 import java.io.Serializable;
 
+/**
+ * @author 1987diegog
+ */
 public class WordDTO implements Serializable {
 
     private Long id;

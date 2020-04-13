@@ -1,21 +1,19 @@
-package com.demente.ideas.learnwords;
+package com.demente.ideas.learnwords.mapper;
 
-import com.demente.ideas.learnwords.dtos.UsersListDTO;
 import com.demente.ideas.learnwords.dtos.UserDTO;
+import com.demente.ideas.learnwords.dtos.UsersListDTO;
 import com.demente.ideas.learnwords.dtos.WordDTO;
-import com.demente.ideas.learnwords.mapper.UserMapper;
-import com.demente.ideas.learnwords.mapper.WordMapper;
-import com.demente.ideas.learnwords.model.domain.UserList;
 import com.demente.ideas.learnwords.model.domain.Status;
-import com.demente.ideas.learnwords.model.entity.Meaning;
-import com.demente.ideas.learnwords.model.entity.Tag;
-import com.demente.ideas.learnwords.model.entity.User;
-import com.demente.ideas.learnwords.model.entity.Word;
+import com.demente.ideas.learnwords.model.domain.UserList;
+import com.demente.ideas.learnwords.model.domain.entity.Meaning;
+import com.demente.ideas.learnwords.model.domain.entity.Tag;
+import com.demente.ideas.learnwords.model.domain.entity.User;
+import com.demente.ideas.learnwords.model.domain.entity.Word;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.HashSet;
@@ -24,16 +22,8 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = LearnWordsApplication.class, //
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class LearnWordsApplicationTests {
-
-    @LocalServerPort
-    public int port;
-
-//	@Test
-//	void contextLoads() {
-//	}
+@SpringBootTest()
+class MapperTests {
 
     ///////////////////////////////////////////////////////
     ///////////////////// TEST MAPPER /////////////////////
@@ -44,6 +34,27 @@ class LearnWordsApplicationTests {
 
     @Autowired
     private UserMapper userMapper;
+
+    private static User userData;
+
+    @BeforeEach
+    public void loadData() {
+
+        Long idUser = 456789L;
+        String name = "Diego_TEST";
+        String lastName = "Gonzalez_TEST";
+        String username = "1987diegog_TEST";
+        String email = "1987diegog@gmail.com_TEST";
+        String password = "pass123987";
+
+        userData = new User(idUser, name, lastName, username, password, email);
+    }
+
+    private static UserDTO getUserDTO() {
+        return new UserDTO(userData.getId(), userData.getName(),
+                userData.getLastName(), userData.getUsername(),
+                userData.getPassword(), userData.getEmail(), userData.getStatus().name());
+    }
 
     @Test
     public void givenWordDTOFromWord() {
@@ -91,43 +102,27 @@ class LearnWordsApplicationTests {
     @Test
     public void givenUserDTOFromUser() {
 
-        User user = new User();
-        user.setId(1L);
-        user.setName("Diego");
-        user.setLastName("Gonzalez");
-        user.setUsername("1987diegog");
-        user.setEmail("1987diegog@gmail.com");
-        user.setStatus(Status.ENABLED);
+        UserDTO userDTO = userMapper.create(userData);
 
-        UserDTO userDTO = userMapper.create(user);
-
-        assertEquals(user.getId(), userDTO.getIdUser());
-        assertEquals(user.getName(), userDTO.getName());
-        assertEquals(user.getLastName(), userDTO.getLastName());
-        assertEquals(user.getUsername(), userDTO.getUsername());
-        assertEquals(user.getEmail(), userDTO.getEmail());
-        assertEquals(user.getStatus().name(), userDTO.getStatus());
+        assertEquals(userData.getId(), userDTO.getIdUser());
+        assertEquals(userData.getName(), userDTO.getName());
+        assertEquals(userData.getLastName(), userDTO.getLastName());
+        assertEquals(userData.getUsername(), userDTO.getUsername());
+        assertEquals(userData.getEmail(), userDTO.getEmail());
+        assertEquals(userData.getStatus().name(), userDTO.getStatus());
     }
 
     @Test
     public void givenUserFromUserDTO() {
 
-        UserDTO userDTO = new UserDTO();
-        userDTO.setIdUser(1L);
-        userDTO.setName("Diego");
-        userDTO.setLastName("Gonzalez");
-        userDTO.setUsername("1987diegog");
-        userDTO.setEmail("1987diegog@gmail.com");
-        userDTO.setStatus("ENABLED");
+        User user = userMapper.create(getUserDTO());
 
-        User user = userMapper.create(userDTO);
-
-        assertEquals(user.getId(), userDTO.getIdUser());
-        assertEquals(user.getName(), userDTO.getName());
-        assertEquals(user.getLastName(), userDTO.getLastName());
-        assertEquals(user.getUsername(), userDTO.getUsername());
-        assertEquals(user.getEmail(), userDTO.getEmail());
-        assertEquals(user.getStatus().name(), userDTO.getStatus());
+        assertEquals(user.getId(), getUserDTO().getIdUser());
+        assertEquals(user.getName(), getUserDTO().getName());
+        assertEquals(user.getLastName(), getUserDTO().getLastName());
+        assertEquals(user.getUsername(), getUserDTO().getUsername());
+        assertEquals(user.getEmail(), getUserDTO().getEmail());
+        assertEquals(user.getStatus().name(), getUserDTO().getStatus());
     }
 
     @Test
@@ -149,7 +144,5 @@ class LearnWordsApplicationTests {
 
         UsersListDTO listDTO = userMapper.create(userList);
         assertEquals(userList.getUsers().size(), listDTO.getUsers().size());
-
     }
-
 }

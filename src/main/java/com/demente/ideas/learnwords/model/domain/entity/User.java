@@ -1,18 +1,18 @@
-package com.demente.ideas.learnwords.model.entity;
+package com.demente.ideas.learnwords.model.domain.entity;
 
-import com.demente.ideas.learnwords.model.domain.DateAudit;
 import com.demente.ideas.learnwords.model.domain.Status;
-import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * @author 1987diegog
+ */
 @Entity
-@Table(name = "IDDE_T_USERS", uniqueConstraints = {
+@Table(name = "DEMENTE_T_USERS", uniqueConstraints = {
         @UniqueConstraint(columnNames = {
                 "username"
         }),
@@ -47,7 +47,7 @@ public class User extends DateAudit {
     private String email;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles",
+    @JoinTable(name = "DEMENTE_T_USER_ROLES",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
@@ -56,11 +56,14 @@ public class User extends DateAudit {
 
     }
 
-    public User(String name, String username, String email, String password) {
+    public User(Long id, String name, String lastName, String username,
+                String password, String email) {
+        this.id = id;
         this.name = name;
+        this.lastName = lastName;
         this.username = username;
-        this.email = email;
         this.password = password;
+        this.email = email;
         this.status = Status.ENABLED;
         this.roles = new HashSet<>();
     }

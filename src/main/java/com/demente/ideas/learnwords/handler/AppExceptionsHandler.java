@@ -17,6 +17,9 @@ import org.springframework.web.context.request.WebRequest;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
+/**
+ * @author 1987diegog
+ */
 @ControllerAdvice
 //extends ResponseEntityExceptionHandler --> ambiguous MethodArgumentNotValidException
 public class AppExceptionsHandler  {

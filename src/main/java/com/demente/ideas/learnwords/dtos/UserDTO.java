@@ -14,28 +14,32 @@ public class UserDTO implements Serializable {
 
     @NotBlank(message = "Name is mandatory")
     private String name;
+
     @NotBlank(message = "LastName is mandatory")
     private String lastName;
+
     @NotBlank(message = "Username is mandatory")
     private String username;
-    @NotBlank(message = "Status is mandatory")
-    private String status;
+
+    private String password;
+
     @NotBlank(message = "Email is mandatory")
     private String email;
+
+    @NotBlank(message = "Status is mandatory")
+    private String status;
 
     public UserDTO() {
     }
 
-    public UserDTO(Long idUser, @NotBlank(message = "Name is mandatory") String name,
-                   @NotBlank(message = "LastName is mandatory") String lastName,
-                   @NotBlank(message = "Username is mandatory") String username,
-                   @NotBlank(message = "Email is mandatory") String email,
-                   @NotBlank(message = "Status is mandatory") String status) {
+    public UserDTO(Long id, String name, String lastName, String username,
+                   String password, String email, String status) {
 
-        this.idUser = idUser;
+        this.idUser = id;
         this.name = name;
         this.lastName = lastName;
         this.username = username;
+        this.password = password;
         this.email = email;
         this.status = status;
     }
@@ -72,19 +76,27 @@ public class UserDTO implements Serializable {
         this.username = username;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

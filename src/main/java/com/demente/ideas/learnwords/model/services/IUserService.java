@@ -2,10 +2,12 @@ package com.demente.ideas.learnwords.model.services;
 
 import com.demente.ideas.learnwords.exceptions.BussinesServiceException;
 import com.demente.ideas.learnwords.exceptions.UserNotFoundException;
-import com.demente.ideas.learnwords.model.entity.User;
+import com.demente.ideas.learnwords.model.domain.UserList;
+import com.demente.ideas.learnwords.model.domain.entity.User;
 
-import java.util.List;
-
+/**
+ * @author 1987diegog
+ */
 public interface IUserService {
 
     User getMockUser();
@@ -14,7 +16,7 @@ public interface IUserService {
 
     User update(User user) throws UserNotFoundException, BussinesServiceException;
 
-    List<User> findAll() throws BussinesServiceException;
+    UserList findAll() throws BussinesServiceException;
 
     User findById(Long id) throws UserNotFoundException, BussinesServiceException;
 

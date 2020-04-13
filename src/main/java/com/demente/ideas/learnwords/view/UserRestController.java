@@ -1,14 +1,14 @@
 package com.demente.ideas.learnwords.view;
 
-import com.demente.ideas.learnwords.dtos.UsersListDTO;
 import com.demente.ideas.learnwords.dtos.UserDTO;
+import com.demente.ideas.learnwords.dtos.UsersListDTO;
 import com.demente.ideas.learnwords.exceptions.InternalServerErrorException;
 import com.demente.ideas.learnwords.exceptions.NotFoundException;
 import com.demente.ideas.learnwords.exceptions.UserNotFoundException;
-import com.demente.ideas.learnwords.factorys.BOFactory;
-import com.demente.ideas.learnwords.factorys.DTOFactory;
 import com.demente.ideas.learnwords.mapper.UserMapper;
-import com.demente.ideas.learnwords.model.entity.User;
+import com.demente.ideas.learnwords.model.domain.Status;
+import com.demente.ideas.learnwords.model.domain.UserList;
+import com.demente.ideas.learnwords.model.domain.entity.User;
 import com.demente.ideas.learnwords.model.services.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,14 +24,16 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
+/**
+ * @author 1987diegog
+ */
 @RestController
 @RequestMapping("/api/v1/users")
 @Api(tags = "User")
-public class UserResource {
+public class UserRestController {
 
-    private Logger logger = LoggerFactory.getLogger(UserResource.class);
+    private Logger logger = LoggerFactory.getLogger(UserRestController.class);
 
     @Autowired
     private UserService userService;
@@ -39,9 +41,10 @@ public class UserResource {
     @Autowired
     private UserMapper userMapper;
 
-    public UserResource() {
+    public UserRestController() {
     }
 
+    @Secured("ROLE_ADMIN")
     @PostMapping(//
             consumes = {MediaType.APPLICATION_JSON_VALUE}, //
             produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -55,10 +58,10 @@ public class UserResource {
         try {
             logger.info("[CREATE_USER] - It will try to create the user with email: " + userDTO.getEmail());
             User user = userService.save(userMapper.create(userDTO));
-            UserDTO DTOUserResponse = userMapper.create(user);
+            UserDTO userResponseDTO = userMapper.create(user);
             logger.info("[CREATE_USER] - User created successful, the associated id was: " + user.getId()
                     + ", email: " + userDTO.getEmail());
-            return new ResponseEntity<>(DTOUserResponse, HttpStatus.CREATED);
+            return new ResponseEntity<>(userResponseDTO, HttpStatus.CREATED);
         } catch (Exception e) {
             logger.error("[CREATE_USER] [ERROR] - Internal server error, when trying to create user with email: "
                     + userDTO.getEmail(), e);
@@ -67,6 +70,7 @@ public class UserResource {
         }
     }
 
+    @Secured("ROLE_ADMIN")
     @PutMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Update user data", //
             notes = "Service for update user data")
@@ -79,11 +83,19 @@ public class UserResource {
         try {
             logger.info("[UPDATE_USER] - It will try to update the user with id: " + userDTO.getIdUser());
             User user = userService.findById(userDTO.getIdUser());
-            user = BOFactory.modify(user, userDTO);
+
+            // modify user data
+            if (user != null && userDTO != null) {
+                user.setName(userDTO.getName());
+                user.setUsername(userDTO.getUsername());
+                user.setEmail(userDTO.getEmail());
+                user.setStatus(Status.get(userDTO.getStatus()));
+            }
+
             User userModified = userService.update(user);
-            UserDTO DTOUserResponse = userMapper.create(userModified);
+            UserDTO userResponseDTO = userMapper.create(userModified);
             logger.info("[UPDATE_USER] - User updated successful, id: " + userDTO.getIdUser());
-            return new ResponseEntity<>(DTOUserResponse, HttpStatus.OK);
+            return new ResponseEntity<>(userResponseDTO, HttpStatus.OK);
         } catch (UserNotFoundException e) {
             logger.info("[UPDATE_USER] [NOT_FOUND] - User not found, id: " + userDTO.getIdUser());
             throw new NotFoundException("User not found, id: " + userDTO.getIdUser());
@@ -95,6 +107,7 @@ public class UserResource {
         }
     }
 
+    @Secured("ROLE_ADMIN")
     @DeleteMapping("/{id}")
     @ApiOperation(value = "Delete a user", //
             notes = "Service to delete a user")
@@ -123,7 +136,7 @@ public class UserResource {
     ///////////////////////////// QUERIES ////////////////////////////
     /////////////////////////////////////////////////////////////////
 
-    @Secured("ROLE_ADMIN")
+    @Secured("ROLE_USER")
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Returns all users", //
             notes = "Service returns all users")
@@ -134,8 +147,8 @@ public class UserResource {
             throws InternalServerErrorException {
         try {
             logger.info("[GET_ALL_USERS] - It will try to return all system users...");
-            List<User> userList = this.userService.findAll();
-            UsersListDTO usersListDTO = DTOFactory.createList(userList);
+            UserList userList = this.userService.findAll();
+            UsersListDTO usersListDTO = userMapper.create(userList);
             logger.info("[GET_ALL_USERS] - Get all users finished successfully ");
             return new ResponseEntity<>(usersListDTO, HttpStatus.OK);
         } catch (Exception e) {
@@ -144,6 +157,7 @@ public class UserResource {
         }
     }
 
+    @Secured("ROLE_USER")
     @GetMapping(path = "/{id}", //
             produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(value = "Get a user by id", //
@@ -152,13 +166,14 @@ public class UserResource {
             @ApiResponse(code = 200, message = "User found"), //
             @ApiResponse(code = 404, message = "User not found"), //
             @ApiResponse(code = 500, message = "Internal system error")})
-    public ResponseEntity<User> findById(@PathVariable("id") Long id)
+    public ResponseEntity<UserDTO> findById(@PathVariable("id") Long id)
             throws NotFoundException, InternalServerErrorException {
         try {
             logger.info("[FIND_BY_USER_ID] - It will try to return a user by id: " + id);
             User user = userService.findById(id);
+            UserDTO userDTO = userMapper.create(user);
             logger.info("[FIND_BY_USER_ID] - User found successful, id: " + id);
-            return new ResponseEntity<>(user, HttpStatus.OK);
+            return new ResponseEntity<>(userDTO, HttpStatus.OK);
         } catch (UserNotFoundException e) {
             logger.info("[FIND_BY_USER_ID] [NOT_FOUND] - User not found, id: " + id);
             throw new NotFoundException("User not found, id: " + id);

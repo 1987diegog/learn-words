@@ -1,7 +1,7 @@
 package com.demente.ideas.learnwords.model.services;
 
-import com.demente.ideas.learnwords.model.entity.Role;
-import com.demente.ideas.learnwords.model.entity.User;
+import com.demente.ideas.learnwords.model.domain.entity.Role;
+import com.demente.ideas.learnwords.model.domain.entity.User;
 import com.demente.ideas.learnwords.repository.IUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author 1987diegog
+ */
 @Service("jpaUserDetailsService")
 public class JpaUserDetailsService implements UserDetailsService {
 

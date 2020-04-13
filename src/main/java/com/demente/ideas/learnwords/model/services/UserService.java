@@ -2,18 +2,23 @@ package com.demente.ideas.learnwords.model.services;
 
 import com.demente.ideas.learnwords.exceptions.BussinesServiceException;
 import com.demente.ideas.learnwords.exceptions.UserNotFoundException;
-import com.demente.ideas.learnwords.model.entity.User;
+import com.demente.ideas.learnwords.model.domain.UserList;
+import com.demente.ideas.learnwords.model.domain.entity.User;
 import com.demente.ideas.learnwords.repository.IUserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 
+/**
+ * @author 1987diegog
+ */
 // Service es un patron del estilo facade, nos sirve para acceder a distintos DAO
 @Service
 @Primary
@@ -26,6 +31,9 @@ public class UserService implements IUserService {
     @Autowired
     private IUserRepository userRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     // Es necesario que todos los @Componte tenga un constructor por defecto para que pueda
     // ser inyectado DI (inyeccion de dependencias). En caso de no tener un constructor
     // con parametros no es necesario indicar el mismo (ya que se encuentra implicito)
@@ -35,7 +43,8 @@ public class UserService implements IUserService {
 
     @Override
     public User getMockUser() {
-        return new User("Diego", "1987diegog", "1987diegog@gmail.com", "pass");
+        return new User(1L, "Diego", "Gonzalez",
+                "1987diegog", "pass", "1987diegog@gmail.com");
     }
 
     /**
@@ -48,6 +57,10 @@ public class UserService implements IUserService {
     public User save(User user) throws BussinesServiceException {
         logger.info("[USER_CREATE] - Start, creating user...");
         try {
+            if (user.getPassword() != null) {
+                String bCryptPassword = passwordEncoder.encode(user.getPassword());
+                user.setPassword(bCryptPassword);
+            }
             return this.userRepository.save(user);
         } catch (Exception e) {
             logger.error("[USER_CREATE] [ERROR] - An error occurred while trying to create a user", e);
@@ -150,14 +163,14 @@ public class UserService implements IUserService {
      */
     @Transactional(readOnly = true)
     @Override
-    public List<User> findAll() throws BussinesServiceException {
+    public UserList findAll() throws BussinesServiceException {
         try {
             logger.info("[USER_FIND_ALL] - Start, searching users...");
             List<User> listUsers = this.userRepository.findAll();
             if (listUsers != null) {
                 logger.info("[USER_FIND_ALL] - List users size: " + listUsers.size());
             }
-            return listUsers;
+            return new UserList(listUsers);
         } catch (Exception e) {
             logger.error("[USER_FIND_ALL] [ERROR] - An error occurred while trying to find all users", e);
             throw new BussinesServiceException("An error occurred while trying to find all users", e);

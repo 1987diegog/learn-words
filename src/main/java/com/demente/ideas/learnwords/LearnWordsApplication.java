@@ -11,6 +11,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import javax.annotation.PostConstruct;
 import java.util.TimeZone;
 
+/**
+ * @author 1987diegog
+ */
 //same as @Configuration @EnableAutoConfiguration @ComponentScan
 @SpringBootApplication
 @EntityScan(basePackageClasses = {

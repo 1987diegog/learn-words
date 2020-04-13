@@ -13,7 +13,6 @@ public enum Status {
         } else if (DISABLE.name().equals(status)) {
             return DISABLE;
         }
-
         return null;
     }
 }

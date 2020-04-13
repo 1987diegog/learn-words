@@ -1,4 +1,4 @@
-package com.demente.ideas.learnwords.model.domain;
+package com.demente.ideas.learnwords.model.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.CreatedDate;
@@ -11,6 +11,9 @@ import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.time.Instant;
 
+/**
+ * @author 1987diegog
+ */
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(

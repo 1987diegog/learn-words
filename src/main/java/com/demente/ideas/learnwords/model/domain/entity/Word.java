@@ -1,12 +1,13 @@
-package com.demente.ideas.learnwords.model.entity;
-
-import com.demente.ideas.learnwords.model.domain.DateAudit;
+package com.demente.ideas.learnwords.model.domain.entity;
 
 import javax.persistence.*;
 import java.util.Set;
 
+/**
+ * @author 1987diegog
+ */
 @Entity
-@Table(name = "IDDE_T_WORDS")
+@Table(name = "DEMENTE_T_WORDS")
 public class Word extends DateAudit {
 
     @Id
@@ -15,7 +16,7 @@ public class Word extends DateAudit {
     private String word;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "words_tags",
+    @JoinTable(name = "DEMENTE_T_WORDS_TAGS",
             joinColumns = @JoinColumn(name = "word_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags;
