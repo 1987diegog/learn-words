@@ -1,50 +1,59 @@
+
 # learn-words
 Spring Boot, API REST
-
 Meaning and definition of words
 
-POST
-http://localhost:8080/api/login
-{
-	"username":"admin",
-	"password":"admin"
-}
-or
-{
-	"username":"user",
-	"password":"user"
-}
+***Login***
+> POST
+> http://localhost:8080/api/login
 
-POST (whit Bearer Token ADMIN authorization)
-http://localhost:8080/api/v1/users
-{
-    "name": "Jhon",
-    "lastName": "Doe",
-    "username": "jhondoe",
-    "password":"jhondoe",
-    "email": "jhondoe@gmail.com",
-    "status":"ENABLED"
-}
+    {
+    	"username":"admin",
+    	"password":"admin"
+    }
 
+> or
 
-PUT (whit Bearer Token ADMIN authorization)
-http://localhost:8080/api/v1/users
-{
-    "idUser": "XYZ"
-    "name": "newName",
-    "lastName": "newLastName",
-    "username": "newUsername",
-    "password":"newPassword",
-    "email": "newEmail@gmail.com",
-    "status":"ENABLED"
-}
+    {
+    	"username":"user",
+    	"password":"user"
+    }
 
-DELETE (whit Bearer Token ADMIN authorization)
-http://localhost:8080/api/v1/users/{id}
+***Inser User***
+> POST (Authorization whit Bearer Token ADMIN)
+> http://localhost:8080/api/v1/users
 
-GET (whit Bearer Token USER authorization)
-http://localhost:8080/api/v1/users
-http://localhost:8080/api/v1/users/3
+    {
+        "name": "Jhon",
+        "lastName": "Doe",
+        "username": "jhondoe",
+        "password":"jhondoe",
+        "email": "jhondoe@gmail.com",
+        "status":"ENABLED"
+    }
 
+***Update User***
+> PUT (Authorization whit Bearer Token ADMIN)
+> http://localhost:8080/api/v1/users
 
+    {
+        "idUser": "nº_Id",
+        "name": "new_name",
+        "lastName": "new_last_name",
+        "username": "new_rsername",
+        "password":"new_password",
+        "email": "new_email@gmail.com",
+        "status":"ENABLED"
+    }
 
+***Delete User***
+> DELETE (Authorization whit Bearer Token ADMIN)
+> http://localhost:8080/api/v1/users/{id}
+
+***All Users***
+> GET (whit Bearer Token USER authorization)
+> http://localhost:8080/api/v1/users
+
+***User by id***
+> GET (whit Bearer Token USER authorization)
+> http://localhost:8080/api/v1/users/{id}
