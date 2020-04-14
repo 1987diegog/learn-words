@@ -64,6 +64,6 @@ Meaning and definition of words
 # Swagger
 http://localhost:8080/swagger-ui.html
 
-# Access:
+# Access
 http://localhost:8080/
 
