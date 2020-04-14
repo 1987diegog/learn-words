@@ -3,7 +3,8 @@
 Spring Boot, API REST
 Meaning and definition of words
 
-***Login***
+### Login
+
 > POST
 > http://localhost:8080/api/login
 
@@ -18,6 +19,8 @@ Meaning and definition of words
     	"username":"user",
     	"password":"user"
     }
+
+### Api Users examples
 
 ***Inser User***
 > POST (Authorization whit Bearer Token ADMIN)
@@ -57,3 +60,10 @@ Meaning and definition of words
 ***User by id***
 > GET (whit Bearer Token USER authorization)
 > http://localhost:8080/api/v1/users/{id}
+
+### Swagger
+http://localhost:8080/swagger-ui.html
+
+# Access:
+- localhost:8080
+
