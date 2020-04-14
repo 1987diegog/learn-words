@@ -65,5 +65,5 @@ Meaning and definition of words
 http://localhost:8080/swagger-ui.html
 
 # Access:
-- localhost:8080
+http://localhost:8080/
 
