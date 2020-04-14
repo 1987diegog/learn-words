@@ -1,4 +1,5 @@
-# Security enable/disable
+#Security enable/disable
+# Averiguar como deshabilitar por config-perfil-testing--
 #security:
 #  basic:
 #    enabled: false

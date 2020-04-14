@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -44,13 +45,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 //@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 //@AutoConfigureTestDatabase
 //@IntegrationTest({"server.port=0"})
-//@ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-@EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class,
-        UserDetailsServiceAutoConfiguration.class}
-)
+@EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class})
+@ActiveProfiles("test")
 public class UserRestControllerIntegretionTest {
 
     private Logger logger = LogManager.getLogger(UserRestControllerIntegretionTest.class);

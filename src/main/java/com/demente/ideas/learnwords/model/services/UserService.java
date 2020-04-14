@@ -28,18 +28,16 @@ import java.util.List;
 // Spring no sabe cual inyectar a no ser que se le indique.
 public class UserService implements IUserService {
 
+    Logger logger = LogManager.getLogger(UserService.class);
+
     @Autowired
     private IUserRepository userRepository;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    // Es necesario que todos los @Componte tenga un constructor por defecto para que pueda
-    // ser inyectado DI (inyeccion de dependencias). En caso de no tener un constructor
-    // con parametros no es necesario indicar el mismo (ya que se encuentra implicito)
-    // pero si se tiene un constructor con parametros, es necesario indicar el constructor
-    // por defecto.
-    Logger logger = LogManager.getLogger(UserService.class);
+    public UserService() {
+    }
 
     @Override
     public User getMockUser() {

@@ -1,5 +1,6 @@
 package com.demente.ideas.learnwords.services;
 
+import com.demente.ideas.learnwords.config.GlobalConfig;
 import com.demente.ideas.learnwords.model.domain.UserList;
 import com.demente.ideas.learnwords.model.domain.entity.User;
 import com.demente.ideas.learnwords.model.services.IUserService;
@@ -11,9 +12,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,10 +33,20 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
+//@SpringBootTest(classes = LearnWordsApplication.class, //
+//        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//@EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class})
+//@ActiveProfiles("test")
 class UserServiceTest {
+
+    // @Mock reemplaza por completo la clase base y solo devolvera valores por defecto o predefinidos por nosotros
+    // @Spy mantendra la clase base y solo reemplazara algunos metodos (partial mocking).
 
     @Mock
     private IUserRepository userRepository;
+
+    @Spy
+    private BCryptPasswordEncoder passwordEncoder;
 
     @InjectMocks
     private IUserService userService = new UserService();
@@ -75,8 +93,6 @@ class UserServiceTest {
 
         ////////////////////// - ARRANGE (SETUP TEST) - //////////////////////
         when(userRepository.findById(userData.getId())).thenReturn(Optional.of(userData));
-
-        // Mock Save or Update
         when(userRepository.save(any(User.class))).thenReturn(userData);
 
         ///////////////////////// - ACT (EXECUTE) - /////////////////////////
@@ -92,8 +108,6 @@ class UserServiceTest {
 
         ////////////////////// - ARRANGE (SETUP TEST) - //////////////////////
         when(userRepository.findById(userData.getId())).thenReturn(Optional.of(userData));
-
-        // Mock Save or Update
         when(userRepository.save(any(User.class))).thenReturn(userData);
 
         ///////////////////////// - ACT (EXECUTE) - /////////////////////////

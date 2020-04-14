@@ -16,14 +16,18 @@ import java.util.Set;
 /**
  * @author 1987diegog
  */
+// Es necesario que todos las clases definidas con @Compont tengan un constructor por defecto
+// para que pueda ser inyectado DI (inyeccion de dependencias). En caso de no tener un
+// constructor con parametros no es necesario indicar el mismo (ya que se encuentra implicito)
+// pero si se tiene un constructor con parametros, es necesario indicar el constructor por defecto.
 @Component
-public class DataLoader implements ApplicationRunner {
+public class InitDataLoader implements ApplicationRunner {
 
     private IUserRepository userRepository;
     private IRoleRepository roleRepository;
 
     @Autowired
-    public DataLoader(IUserRepository userRepository, IRoleRepository roleRepository) {
+    public InitDataLoader(IUserRepository userRepository, IRoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
     }

@@ -1,5 +1,6 @@
 package com.demente.ideas.learnwords.dtos;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
@@ -12,21 +13,21 @@ public class UserDTO implements Serializable {
 
     private Long idUser;
 
-    @NotBlank(message = "Name is mandatory")
+    @NotBlank(message = "{name.notBlank}")
     private String name;
 
-    @NotBlank(message = "LastName is mandatory")
+    @NotBlank(message = "{lastName.notBlank}")
     private String lastName;
 
-    @NotBlank(message = "Username is mandatory")
+    @NotBlank(message = "{username.notBlank}")
     private String username;
 
     private String password;
 
-    @NotBlank(message = "Email is mandatory")
+    @Email(message = "{email.incorrectFormat}")
     private String email;
 
-    @NotBlank(message = "Status is mandatory")
+    @NotBlank(message = "{status.notBlank}")
     private String status;
 
     public UserDTO() {

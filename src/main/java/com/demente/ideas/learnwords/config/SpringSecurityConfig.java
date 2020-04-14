@@ -21,8 +21,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 // Similar a @Secured tenemos el @PreAuthorize, la habilitacion de esta anotacion es con prePostEnabled
 // @EnableGlobalMethodSecurity(prePostEnabled = true)
-//@Profile(value = {"development", "production"})
 @Configuration
+@Profile("!test")
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -40,6 +40,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         // H2-console config
 //        http.authorizeRequests().antMatchers("/h2-console/**").permitAll();
 //        http.headers().frameOptions().disable();
+        http.authorizeRequests().antMatchers("/v2/api-docs",
+                "/configuration/ui",
+                "/swagger-resources/**",
+                "/configuration/security",
+                "/swagger-ui.html",
+                "/webjars/**").permitAll();
 
         http.authorizeRequests()
                 .antMatchers("/", "/css/**", "/js/**", "/images/**").permitAll()

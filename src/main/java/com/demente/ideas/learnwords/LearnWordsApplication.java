@@ -22,9 +22,6 @@ import java.util.TimeZone;
 })
 public class LearnWordsApplication implements CommandLineRunner {
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
-
     @PostConstruct
     void init() {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
@@ -37,15 +34,8 @@ public class LearnWordsApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        // Solamente a modo de ejemplo, se encriptan dos password que seran posteriormente utilizadas
-        // en el import.sql
-        String password_admin = "admin";
-        String password_num = "user";
-
-        String bCryptPassword = passwordEncoder.encode(password_admin);
-        System.out.println("BCryptPasswordEncoder - Clave encriptada para admin: " + bCryptPassword);
-
-        bCryptPassword = passwordEncoder.encode(password_num);
-        System.out.println("BCryptPasswordEncoder - Clave encriptada para otros usuarios: " + bCryptPassword);
+        System.out.println("----------------------------------------------- ");
+        System.out.println("------------- LEARN WORDS STARTED ------------- ");
+        System.out.println("----------------------------------------------- ");
     }
 }

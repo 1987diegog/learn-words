@@ -45,13 +45,13 @@ public class UserRestController {
     }
 
     @Secured("ROLE_ADMIN")
-    @PostMapping(//
-            consumes = {MediaType.APPLICATION_JSON_VALUE}, //
+    @PostMapping(
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ApiOperation(value = "Create a user", //
+    @ApiOperation(value = "Create a user",
             notes = "Service to create a user")
-    @ApiResponses(value = { //
-            @ApiResponse(code = 201, message = "User created successfully"), //
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "User created successfully"),
             @ApiResponse(code = 500, message = "Internal system error")})
     public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userDTO)
             throws InternalServerErrorException {
