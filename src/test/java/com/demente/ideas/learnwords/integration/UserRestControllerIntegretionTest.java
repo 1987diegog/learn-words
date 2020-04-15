@@ -1,7 +1,10 @@
 package com.demente.ideas.learnwords.integration;
 
+import com.demente.ideas.learnwords.dtos.ErrorMessage;
 import com.demente.ideas.learnwords.dtos.UserDTO;
 import com.demente.ideas.learnwords.dtos.UsersListDTO;
+import com.demente.ideas.learnwords.exceptions.BussinesServiceException;
+import com.demente.ideas.learnwords.exceptions.InternalServerErrorException;
 import com.demente.ideas.learnwords.model.domain.entity.User;
 import com.demente.ideas.learnwords.repository.IUserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -98,42 +101,43 @@ public class UserRestControllerIntegretionTest {
 
     @Test
     void testCreateUser() throws Exception {
-
-        logger.info(" ---------------------------------------------------- ");
-        logger.info(" ---------------- [TEST_CREATE_USER] ---------------- ");
-        logger.info(" ---------------------------------------------------- ");
-
         ////////////////////// - ARRANGE (SETUP TEST) - //////////////////////
-
-        logger.info("[TEST_CREATE_USER] - Creating user data...");
-
-        // Mock Save or Update
         when(userRepository.save(any(User.class))).thenReturn(userData);
-
-        // Prepare body request
         String jsonContent = mapper.writeValueAsString(getUserDTO());
-
         ///////////////////////// - ACT (EXECUTE) - /////////////////////////
-
-        logger.info("[TEST_CREATE_USER] - Call mock mvc integration test...");
         ResultActions resultActions = this.mockMvc.perform(MockMvcRequestBuilders
                 .post(getRootUrlUser())
                 .content(jsonContent)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
-
         ///////////////////// - ASSERT (VERIFY RESULT) - /////////////////////
-
-        logger.info("[TEST_CREATE_USER] - Process results...");
         MvcResult result = this.assertResponseUserData(resultActions);
-
         String json = result.getResponse().getContentAsString();
         UserDTO userDTO = mapper.readValue(json, UserDTO.class);
-
         // HTTP status code 201
         assertEquals(result.getResponse().getStatus(), HttpStatus.CREATED.value());
         assertEquals(userDTO.getIdUser(), userData.getId());
         assertNotNull(userDTO);
+    }
+
+    @Test
+    void testCreateUserThrowException() throws Exception {
+        ////////////////////// - ARRANGE (SETUP TEST) - //////////////////////
+        when(userRepository.save(any(User.class))).thenThrow(new IllegalArgumentException());
+        String jsonContent = mapper.writeValueAsString(getUserDTO());
+        ///////////////////////// - ACT (EXECUTE) - /////////////////////////
+        ResultActions resultActions = this.mockMvc.perform(MockMvcRequestBuilders
+                .post(getRootUrlUser())
+                .content(jsonContent)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+        ///////////////////// - ASSERT (VERIFY RESULT) - /////////////////////
+        MvcResult result = resultActions.andDo(print()).andReturn();
+        String json = result.getResponse().getContentAsString();
+        ErrorMessage error = mapper.readValue(json, ErrorMessage.class);
+        // HTTP status code 500
+        assertEquals(result.getResponse().getStatus(), HttpStatus.INTERNAL_SERVER_ERROR.value());
+        assertNotNull(error.getMessage());
     }
 
     @Test

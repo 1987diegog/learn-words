@@ -1,4 +1,4 @@
-package com.demente.ideas.learnwords.services;
+package com.demente.ideas.learnwords.model.services;
 
 import com.demente.ideas.learnwords.config.GlobalConfig;
 import com.demente.ideas.learnwords.model.domain.UserList;

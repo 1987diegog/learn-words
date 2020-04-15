@@ -14,7 +14,7 @@ public class ErrorMessage implements Serializable {
 
     private String message;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime timestamp;
 
     public ErrorMessage() {
