@@ -1,0 +1,27 @@
+version: '3.7'
+services:
+  app:
+    depends_on:
+      - db
+    image: learn-words:latest
+    environment:
+      mysql_server: db
+    ports:
+      - "5000:8080"
+    restart: always
+  db:
+    image: mysql:8
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      MYSQL_DATABASE: db_learn_words
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+      MYSQL_ROOT_PASSWORD: root
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - db-data:/var/lib/mysql
+volumes:
+  db-data:

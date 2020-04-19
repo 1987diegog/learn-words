@@ -36,7 +36,7 @@ import static org.mockito.Mockito.*;
 //@SpringBootTest(classes = LearnWordsApplication.class, //
 //        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 //@EnableAutoConfiguration(exclude = {SecurityAutoConfiguration.class})
-//@ActiveProfiles("test")
+@ActiveProfiles("test")
 class UserServiceTest {
 
     // @Mock reemplaza por completo la clase base y solo devolvera valores por defecto o predefinidos por nosotros
